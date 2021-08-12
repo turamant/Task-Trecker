@@ -31,20 +31,20 @@ app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_001.db')))
 
 #Таблицы приложения
 metadata = MetaData()
-user = Table('users', metadata,
+users = Table('users', metadata,
               Column('id', Integer(), primary_key=True, nullable=False),
               Column('login', String(100), unique=True, nullable=False),
               Column('password', String(100), nullable=False),
               Column('data_create_user', DateTime()),
               )
-
-todo = Table('todo', metadata,
-             Column('id', Integer(), primary_key=True, nullable=False),
-             Column('title', String(100), unique=True),
-             Column('desc', String(100), nullable=False),
-             Column('status', Boolean(), default=0),
-             Column('data_create_todo', DateTime()),
-             )
+tasks = Table('tasks', metadata,
+              Column('id', Integer(), primary_key=True, nullable=False),
+              Column('title', String(100), unique=True),
+              Column('note', String(100), nullable=False),
+              Column('status', Boolean(), default=0),
+              Column('data_create_todo', DateTime()),
+              Column('user_id', ForeignKey("users.id")),
+              )
 
 
 def connect_db():
