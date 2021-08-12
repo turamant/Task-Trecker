@@ -14,12 +14,21 @@
     <div style="margin-top: 50px;" class="ui container">
         <h1 class="ui center aligned header">Task Trecker v.0.0.1</h1>
 
-        <form class="ui form" action="{{url_for('add')}}" method="post">
+
+        <form id="nubexForm" class="ui form" action="{{url_for('add')}}" method="post">
             <div class="field">
                 <label>Задание:</label>
                 <input type="text" name="title" placeholder="Не менее 5 символов ..."><br>
                 <label>Описание задания:</label>
                 <input type="text" name="note" placeholder="Не менее 10 символов ..."><br>
+                <label>Выбрать юзера:</label>
+                <select name="user_id" size="3" multiple form="nubexForm">
+                        {% for user in user_list %}
+                            <div class="ui segment">
+                                <option>{{ user.login }}</option>p>
+                            </div>
+                       {% endfor %}
+                </select>
             </div>
             <button class="ui blue button" type="submit">Add</button>
         </form>
@@ -31,7 +40,9 @@
         <div class="ui segment">
             <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
             <p class="ui gray header">{{ task.note }}</p>
-            <p class="ui gray haeder">{{ task.data_create_task }}</p>
+            <p class="ui gray header">{{ task.data_create_task }}</p>
+            <p class="ui gray header">{{ task.user_id }}</p>
+
 
             {% if task.status == False %}
             <span class="ui gray label">Not Complete</span>
@@ -44,6 +55,9 @@
         </div>
         {% endfor %}
     </div>
+
+
+
 </body>
 
 </html>

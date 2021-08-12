@@ -66,6 +66,15 @@ def close_db(error):
         g.link_db.close()
 
 
+def get_users():
+    db = get_db()
+    query = select([users])
+    r = db.execute(query)
+    rows = r.fetchall()
+    return rows
+
+
+
 @app.route("/")
 def home():
     '''Главная страница'''
@@ -73,7 +82,7 @@ def home():
     query = select([tasks])
     r = db.execute(query)
     rows = r.fetchall()
-    return render_template("base.html", task_list=rows)
+    return render_template("base.html", task_list=rows, user_list=get_users())
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -85,7 +94,8 @@ def add():
                 title=request.form.get("title"),
                 note=request.form.get("note"),
                 status=False,
-                data_create_task=datetime.date.today()
+                data_create_task=datetime.date.today(),
+                user_id=request.form.get("user_id"),
             )
             db.execute(query)
     return redirect(url_for("home"))
