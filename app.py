@@ -10,7 +10,6 @@ from sqlalchemy import MetaData, Table, Column, Integer, String, DateTime, Boole
 from werkzeug.utils import redirect
 import os
 
-
 DATABASE = '/tmp/todo_002.db'
 DEBUG = True
 SECRET_KEY = 'fdgfh78@#5?>gfhf89dx,v06k'
@@ -20,7 +19,6 @@ PASSWORD = '123'
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_002.db')))
-
 
 metadata = MetaData()
 users = Table('users', metadata,
@@ -43,7 +41,6 @@ tasks = Table('tasks', metadata,
               Column('user_id', ForeignKey("users.id")),
               )
 
-
 def connect_db():
     '''Соединение с БД'''
     engine = create_engine('sqlite:///todo_002.db')
@@ -55,7 +52,6 @@ def get_db():
     if not hasattr(g, 'link_db'):
         g.link_db = connect_db()
     return g.link_db
-
 
 @app.teardown_appcontext
 def close_db(error):
@@ -70,7 +66,6 @@ def get_users():
     rows = r.fetchall()
     return rows
 
-
 def get_tasks_open():
     db = get_db()
     query = select([tasks]).where(
@@ -79,8 +74,6 @@ def get_tasks_open():
     r = db.execute(query)
     rows = r.fetchall()
     return rows
-
-
 
 @app.route("/selecting/<int:task_id>")
 def selecting(task_id):
@@ -103,7 +96,6 @@ def selecting(task_id):
     return redirect(url_for("home"))
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     '''Главная страница
@@ -117,7 +109,6 @@ def home():
             r = db.execute(query)
             rows = r.fetchall()
             return render_template("index.html", task_list=rows, user_list=get_users())
-
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -171,7 +162,6 @@ def delete(task_id):
         db.execute(query2)
 
     return redirect(url_for("home"))
-
 
 def create_tables():
     metadata.create_all(connect_db().engine)
