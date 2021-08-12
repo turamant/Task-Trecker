@@ -15,7 +15,7 @@ from flask import Flask, flash, render_template, request, redirect, url_for, g
 from flask_login import LoginManager
 
 # конфигурация приложения
-DATABASE = '/tmp/todo_001.db'
+DATABASE = '/tmp/todo_002.db'
 DEBUG = True
 SECRET_KEY = 'fdgfh78@#5?>gfhf89dx,v06k'
 USERNAME = 'admin'
@@ -25,7 +25,7 @@ PASSWORD = '123'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_001.db')))
+app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_002.db')))
 
 #login_manager = LoginManager(app)
 
@@ -42,14 +42,14 @@ tasks = Table('tasks', metadata,
               Column('title', String(100), unique=True),
               Column('note', String(100), nullable=False),
               Column('status', Boolean(), default=0),
-              Column('data_create_todo', DateTime()),
+              Column('data_create_task', DateTime()),
               Column('user_id', ForeignKey("users.id")),
               )
 
 
 def connect_db():
     '''Соединение с БД'''
-    engine = create_engine('sqlite:///todo_001.db')
+    engine = create_engine('sqlite:///todo_002.db')
     conn = engine.connect()
     return conn
 
@@ -73,7 +73,7 @@ def home():
     query = select([tasks])
     r = db.execute(query)
     rows = r.fetchall()
-    return render_template("base.html", todo_list=rows)
+    return render_template("base.html", task_list=rows)
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -85,24 +85,24 @@ def add():
                 title=request.form.get("title"),
                 note=request.form.get("note"),
                 status=False,
-                data_create_todo=datetime.date.today()
+                data_create_task=datetime.date.today()
             )
             db.execute(query)
     return redirect(url_for("home"))
 
 
-@app.route("/update/<int:todo_id>")
-def update(todo_id):
+@app.route("/update/<int:task_id>")
+def update(task_id):
     '''Обновить статус на выполнено'''
     db = get_db()
     query = select([tasks]).where(
-        tasks.c.id == todo_id
+        tasks.c.id == task_id
     )
     r = db.execute(query)
     rows = r.fetchone()
     if rows != None:
         query2 = tasks.update().where(
-        tasks.c.id == todo_id
+        tasks.c.id == task_id
         ).values(
             status=True
         )
@@ -110,18 +110,18 @@ def update(todo_id):
     return redirect(url_for("home"))
 
 
-@app.route("/delete/<int:todo_id>", methods=['GET', 'POST'])
-def delete(todo_id):
+@app.route("/delete/<int:task_id>", methods=['GET', 'POST'])
+def delete(task_id):
     '''Удалить задание'''
     db = get_db()
     query = select([tasks]).where(
-        tasks.c.id == todo_id
+        tasks.c.id == task_id
     )
     r = db.execute(query)
     rows = r.fetchone()
     if rows != None:
         query2 = tasks.delete().where(
-            tasks.c.id == todo_id
+            tasks.c.id == task_id
         )
         db.execute(query2)
 
@@ -132,6 +132,6 @@ def create_tables():
     metadata.create_all(connect_db().engine)
 
 
-
+#metadata.create_all(connect_db().engine)
 if __name__ == "__main__":
     app.run(debug=True)

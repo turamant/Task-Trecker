@@ -19,7 +19,7 @@
                 <label>Задание:</label>
                 <input type="text" name="title" placeholder="Не менее 5 символов ..."><br>
                 <label>Описание задания:</label>
-                <input type="text" name="desc" placeholder="Не менее 10 символов ..."><br>
+                <input type="text" name="note" placeholder="Не менее 10 символов ..."><br>
             </div>
             <button class="ui blue button" type="submit">Add</button>
         </form>
@@ -27,20 +27,20 @@
         <hr>
 
 
-        {% for todo in todo_list %}
+        {% for task in task_list %}
         <div class="ui segment">
-            <p class="ui big header">{{ todo.id }} | {{ todo.title }}</p>
-            <p class="ui gray header">{{ todo.desc }}</p>
-            <p class="ui gray haeder">{{ todo.data_create_todo }}</p>
+            <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
+            <p class="ui gray header">{{ task.note }}</p>
+            <p class="ui gray haeder">{{ task.data_create_task }}</p>
 
-            {% if todo.status == False %}
+            {% if task.status == False %}
             <span class="ui gray label">Not Complete</span>
             {% else %}
             <span class="ui green label">Completed</span>
             {% endif %}
 
-            <a class="ui blue button" href="/update/{{ todo.id }}">Update</a>
-            <a class="ui red button" href="/delete/{{ todo.id }}">Delete</a>
+            <a class="ui blue button" href="/update/{{ task.id }}">Update</a>
+            <a class="ui red button" href="/delete/{{ task.id }}">Delete</a>
         </div>
         {% endfor %}
     </div>
