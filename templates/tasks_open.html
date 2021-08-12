@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Все открытые задачи , которые можно взять в работу под своим именем</h2>
+ {% for task in task_list %}
+        <div class="ui segment">
+            <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
+            <p class="ui gray header">Краткое описание задачи: {{ task.note }}</p>
+            <p class="ui gray header">Дата создания задачи: {{ task.data_create_task }}</p>
+            <p class="ui gray header">Дата взятия в работу: {{ task.data_take_work  }}</p>
+            <p class="ui gray header">Работа выполнена в : {{ task.data_get_done }}</p>
+            <p class="ui gray header">Ответственный юзер: {{ task.user_id }}</p>
+
+
+            {% if task.status == False %}
+            <span class="ui gray label">Not Complete</span>
+            {% else %}
+            <span class="ui green label">Completed</span>
+            {% endif %}
+
+
+            {% if task.take_work_status == False %}
+            <a class="ui green button" href="/selecting/{{ task.id }}">Взять в работу</a>
+            <span class="ui gray label">Ищу исполнителя!</span>
+            {% else %}
+            <a class="ui gray button" href="">Взять в работу</a>
+            <span class="ui green label">Взята в работу!</span>
+            {% endif %}
+
+            {% if task.get_done_status == False %}
+            <span class="ui gray label">Не выполнена!</span>
+            {% else %}
+            <span class="ui green label">Работа выполнена!</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+         <form id="nubexForm" class="ui form" action="{{url_for('add')}}" method="post">
+            <div class="field">
+                <label>Выбрать задачу:</label>
+                <select name="title" size="3" multiple form="nubexForm">
+                         {% for task in task_list %}
+                            <div class="ui segment">
+                                <option>{{ task.title }}</option>p>
+                            </div>
+                       {% endfor %}
+                </select>
+            </div>
+            <button class="ui blue button" type="submit">Выбрать задачу</button>
+        </form>
+
+        <hr>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+{% if session['logged_in'] %}
+
+	{% if data %}
+	<h3>{{data}}</h3>
+	{% else %}
+
+	<a href="/logout">Logout</a> <br> <br>
+	<form action="" method="POST">
+	  <input type="text" name="login" placeholder="введите логин...">
+	  <input type="submit" value="Finds">
+	</form>
+	{% endif %}
+<a href="/logout">Logout</a> <br> <br>
+    <div style="margin-top: 50px;" class="ui container">
+        <h1 class="ui center aligned header">Task Trecker v.0.0.1</h1>
+	<form id="nubexForm" class="ui form" action="{{url_for('add')}}" method="post">
+            <div class="field">
+                <label>Задание:</label>
+                <input type="text" name="title" placeholder="Не менее 5 символов ..."><br>
+                <label>Описание задания:</label>
+                <input type="text" name="note" placeholder="Не менее 10 символов ..."><br>
+                <label>Выбрать ответственного юзера:</label>
+                <select name="user_id" size="3" multiple form="nubexForm">
+                        {% for user in user_list %}
+                            <div class="ui segment">
+                                <option>{{ user.login }}</option>p>
+                            </div>
+                       {% endfor %}
+                </select>
+            </div>
+            <button class="ui blue button" type="submit">Add</button>
+        </form>
+
+        <hr>
+
+
+        {% for task in task_list %}
+        <div class="ui segment">
+            <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
+            <p class="ui gray header">Краткое описание задачи: {{ task.note }}</p>
+            <p class="ui gray header">Дата создания задачи: {{ task.data_create_task }}</p>
+            <p class="ui gray header">Дата взятия в работу: {{ task.data_take_work  }}</p>
+            <p class="ui gray header">Работа выполнена в : {{ task.data_get_done }}</p>
+            <p class="ui gray header">Ответственный юзер: {{ task.user_id }}</p>
+
+
+            {% if task.status == False %}
+            <span class="ui gray label">Not Complete</span>
+            {% else %}
+            <span class="ui green label">Completed</span>
+            {% endif %}
+
+            {% if task.take_work_status == False %}
+            <span class="ui gray label">Ищу исполнителя!</span>
+            {% else %}
+            <span class="ui green label">Взята в работу!</span>
+            {% endif %}
+
+            {% if task.get_done_status == False %}
+            <span class="ui gray label">Не выполнена!</span>
+            {% else %}
+            <span class="ui green label">Работа выполнена!</span>
+            {% endif %}
+
+
+
+            <a class="ui blue button" href="/update/{{ task.id }}">Update</a>
+            <a class="ui red button" href="/delete/{{ task.id }}">Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+{% else %}
+<p>Not login!</p>
+
+<a href="/login">Login</a>
+<a href="/register">Register</a>
+
+{% endif %}
+{% endblock %}
