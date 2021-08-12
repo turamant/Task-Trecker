@@ -70,7 +70,7 @@ def close_db(error):
 def home():
     '''Главная страница'''
     db = get_db()
-    query = select([todo])
+    query = select([tasks])
     r = db.execute(query)
     rows = r.fetchall()
     return render_template("base.html", todo_list=rows)
@@ -80,10 +80,10 @@ def add():
     '''Добавить задания'''
     db = get_db()
     if request.method == "POST":
-        if len(request.form['title']) > 5 and len(request.form['desc']) > 10:
-            query = todo.insert().values(
+        if len(request.form['title']) > 5 and len(request.form['note']) > 10:
+            query = tasks.insert().values(
                 title=request.form.get("title"),
-                desc=request.form.get("desc"),
+                note=request.form.get("note"),
                 status=False,
                 data_create_todo=datetime.date.today()
             )
@@ -95,14 +95,14 @@ def add():
 def update(todo_id):
     '''Обновить статус на выполнено'''
     db = get_db()
-    query = select([todo]).where(
-        todo.c.id == todo_id
+    query = select([tasks]).where(
+        tasks.c.id == todo_id
     )
     r = db.execute(query)
     rows = r.fetchone()
     if rows != None:
-        query2 = todo.update().where(
-        todo.c.id == todo_id
+        query2 = tasks.update().where(
+        tasks.c.id == todo_id
         ).values(
             status=True
         )
@@ -114,14 +114,14 @@ def update(todo_id):
 def delete(todo_id):
     '''Удалить задание'''
     db = get_db()
-    query = select([todo]).where(
-        todo.c.id == todo_id
+    query = select([tasks]).where(
+        tasks.c.id == todo_id
     )
     r = db.execute(query)
     rows = r.fetchone()
     if rows != None:
-        query2 = todo.delete().where(
-            todo.c.id == todo_id
+        query2 = tasks.delete().where(
+            tasks.c.id == todo_id
         )
         db.execute(query2)
 
