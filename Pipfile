@@ -11,6 +11,7 @@ requests = "*"
 Flask = "*"
 Flask-SQLAlchemy = "*"
 Flask-Login = "*"
+flask-simplelogin = "*"
 
 [dev-packages]
 

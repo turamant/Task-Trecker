@@ -31,15 +31,19 @@ tasks = Table('tasks', metadata,
               Column('id', Integer(), primary_key=True, nullable=False),
               Column('title', String(100), unique=True),
               Column('note', String(100), nullable=False),
-              Column('status', Boolean(), default=0),
-              Column('data_create_task', DateTime()),
-
-              Column('data_take_work', DateTime()),
-              Column('take_work_status', Boolean(), default=0),
-              Column('data_get_done', DateTime()),
-              Column('get_done_status', Boolean(), default=0),
               Column('user_id', ForeignKey("users.id")),
               )
+
+task_status = Table('task_status', metadata,
+                    Column('task_id', ForeignKey("tasks.id"), primary_key=True),
+                    Column('status', Boolean(), default=0),
+                    Column('data_create_task', DateTime()),
+                    Column('data_take_work', DateTime()),
+                    Column('take_work_status', Boolean(), default=0),
+                    Column('data_get_done', DateTime()),
+                    Column('get_done_status', Boolean(), default=0),
+                    )
+
 
 def connect_db():
     '''Соединение с БД'''
@@ -84,6 +88,7 @@ def selecting(task_id):
     )
     r = db.execute(query)
     rows = r.fetchone()
+
     if rows != None:
         query2 = tasks.update().where(
         tasks.c.id == task_id
@@ -108,7 +113,7 @@ def home():
             query = select([tasks])
             r = db.execute(query)
             rows = r.fetchall()
-            return render_template("index.html", task_list=rows, user_list=get_users())
+            return render_template("index.html", task_list=rows, data=get_users(), user_list=get_users())
 
 @app.route("/add", methods=["POST"])
 def add():
@@ -171,21 +176,25 @@ def tasksopen():
     '''открытые задания '''
     return render_template("tasks_open.html", task_list=get_tasks_open())
 
+def select_login_user(log, passw):
+    db = get_db()
+    query = select([users]).where(
+        users.c.login == log).where(
+        users.c.password == passw
+    )
+    r = db.execute(query)
+    login = r.first()
+    return login
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login Form'''
-    db = get_db()
     if request.method == 'GET':
         return render_template('login.html')
     else:
         login1 = request.form['login']
         password = request.form['password']
-        query = select([users]).where(
-            users.c.login == login1).where(
-            users.c.password == password
-        )
-        r = db.execute(query)
-        login = r.first()
+        login = select_login_user(login1, password)
         if login is not None:
             session['logged_in'] = True
             return redirect(url_for("home"))
