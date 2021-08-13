@@ -1,0 +1,26 @@
+[
+    {
+        "data_create_user": null,
+        "id": 1,
+        "login": "admin",
+        "password": "1"
+    },
+    {
+        "data_create_user": "2021-08-14 00:43:19.799785",
+        "id": 2,
+        "login": "user1",
+        "password": "1"
+    },
+    {
+        "data_create_user": "2021-08-14 00:43:50.831838",
+        "id": 3,
+        "login": "python",
+        "password": "1"
+    },
+    {
+        "data_create_user": "2021-08-14 00:44:30.166797",
+        "id": 4,
+        "login": "van rossum",
+        "password": "1"
+    }
+]
