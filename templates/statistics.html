@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Статистика открытых, отмененных, количество взятых в работу и среднее время выполнения задания </h2>
+
+<div><a class="ui blue button" href="/">На страницу создания заданий</a></div>
+
+    <p class="ui big header">Всего заданий: {{ count_all_tasks }}</p>
+    <p class="ui big header">Всего выполненных: {{ count_done_tasks }}</p>
+    <p class="ui big header">Всего отменненых: {{ count_all_cancel_tasks }}</p>
+    <p class="ui big header">Всего открытых: {{ count_all_open_tasks }}</p>
+    <p class="ui big header">Всего в работе: {{ count_take_work_tasks }}</p>
+
+
+{% endblock %}

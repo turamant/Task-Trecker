@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Все взятые в работу задачи </h2>
+
+<div><a class="ui blue button" href="/">На страницу создания заданий</a></div>
+     {% for task in task_list %}
+            <div class="ui segment">
+           `    <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
+                <p class="ui gray ">Кратко: {{ task.note }}</p>
+                <p class="ui gray ">Создана: {{ task.data_create_task }}</p>
+                <p class="ui gray ">Взята в работу: {{ task.data_take_work  }}</p>
+                <p class="ui gray ">Работа выполнена в : {{ task.data_get_done }}</p>
+                <p class="ui gray ">Ответственный юзер: {{ task.user_id }}</p>
+`            </div>
+    {% endfor %}
+
+{% endblock %}

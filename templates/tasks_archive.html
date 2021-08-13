@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Архив отменненых и удаленных(выполненных) задач</h2>
+    <div><a class="ui blue button" href="/">На страницу создания заданий</a></div>
+    {% for task in task_list %}
+        <div class="ui segment">
+            <p class="ui big header">{{ task.id }} | {{ task.title }}</p>
+            <p class="ui gray ">Кратко: {{ task.note }}</p>
+
+            {% if task.cancel_status == True %}
+            <p class="ui gray label">Дата отмены: {{ task.data_cancel }}</p>
+            {% else %}
+            <p class="ui green label">Дата выполнения: {{ task.data_get_done }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
