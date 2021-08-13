@@ -1,5 +1,5 @@
 <h2>Task Trecker v.0.0.1</h2>
-<p>Veryimple task tracker.</p>
+<p>Very simple task tracker.</p>
 <p>In it, you can create tasks in work,</p>
 <p>mark how to perform completed or canceled,</p>
 <p>view the archive, view statistics.</p>
