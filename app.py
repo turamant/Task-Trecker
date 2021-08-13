@@ -88,7 +88,7 @@ def selecting(task_id):
     )
     r = db.execute(query)
     rows = r.fetchone()
-
+wpfjweoifhewohfewhfihwei
     if rows != None:
         query2 = tasks.update().where(
         tasks.c.id == task_id
