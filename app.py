@@ -402,8 +402,7 @@ def logout():
     session['logged_in'] = False
     return redirect(url_for('home'))
 
-# для создания таблиц при инициализации БД
-#metadata.create_all(connect_db().engine)
+
 
 
 if __name__ == "__main__":
