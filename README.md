@@ -41,10 +41,10 @@
 <li>'user_id', ForeignKey("users.id")</li>
                                                                          
 <h3>Data base load dump</h3>
-     - todo_002.db.sql
-     - tasks.json
-     - users.json
-     - todo_002.db
+     <li>todo_002.db.sql</li>
+     <li>tasks.json</li>
+     <li>users.json</li>
+     <li>todo_002.db</li>
 
 <h3>How to use</h3>
  <li>python  app.py</li>
