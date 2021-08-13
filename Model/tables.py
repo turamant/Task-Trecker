@@ -2,6 +2,7 @@ from sqlalchemy import MetaData, Table, Column, Integer, String, \
     DateTime, Boolean, ForeignKey
 
 metadata = MetaData()
+
 users = Table('users', metadata,
               Column('id', Integer(), primary_key=True, nullable=False),
               Column('login', String(100), unique=True, nullable=False),

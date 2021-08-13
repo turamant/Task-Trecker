@@ -11,7 +11,6 @@ from flask import Flask, g, request, render_template, flash, url_for, session
 from sqlalchemy import create_engine, select, or_
 from sqlalchemy.sql import func
 from werkzeug.utils import redirect
-
 from Model.tables import users, tasks, metadata
 
 DATABASE = '/tmp/todo_002.db'
@@ -21,12 +20,9 @@ USERNAME = 'admin'
 PASSWORD = '123'
 STATIC_FOLDER = 'static'
 
-
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_002.db')))
-
-
 
 def connect_db():
     '''Соединение с БД'''
@@ -46,7 +42,6 @@ def close_db(error):
     if hasattr(g, 'link_db'):
         g.link_db.close()
 
-
 def get_users():
     '''Список пользователей'''
     db = get_db()
@@ -62,8 +57,6 @@ def get_users_one():
     r = db.execute(query)
     rows = r.fetchone()
     return rows[1]
-
-
 
 def get_tasks_open():
     '''Список открытых задач'''
@@ -124,7 +117,6 @@ def statistic_cancel_tasks():
     rows = r.fetchone()
     return rows[0]
 
-
 def statistic_open_tasks():
     ''' Статистика всех открытых заданий (на текущее время)'''
     db = get_db()
@@ -153,7 +145,6 @@ def statistic_take_work_tasks():
     rows = r.fetchone()
     return rows[0]
 
-
 def statistic_get_done_tasks():
     ''' Статистика всех выполненных заадний (на текущее время)'''
     db = get_db()
@@ -167,8 +158,6 @@ def statistic_get_done_tasks():
     rows = r.fetchone()
     return rows[0]
 
-
-
 # Страничка статистики
 @app.route('/statistics')
 def statistics():
@@ -180,8 +169,6 @@ def statistics():
                            count_all_open_tasks=statistic_open_tasks(),
                            count_take_work_tasks=statistic_take_work_tasks(),
                            )
-
-
 
 ##### Кнопка взять задание в работу
 @app.route("/selecting/<int:task_id>")
@@ -223,7 +210,6 @@ def workdone(task_id):
         db.execute(query2)
     return redirect(url_for("home"))
 
-
 #Страничка архива списка задач
 @app.route('/tasksarchive')
 def tasksarchive():
@@ -241,7 +227,6 @@ def tasksopen():
 def taskstakework():
     '''взятые в работу '''
     return render_template("tasks_take_work.html", task_list=get_tasks_take_work())
-
 
 def get_task_list():
     '''Показать все доступные задачи'''
@@ -275,7 +260,6 @@ def add_task():
     )
     db.execute(query)
 
-
 @app.route("/add", methods=["POST"])
 def add():
     '''Добавить новое задание'''
@@ -283,7 +267,6 @@ def add():
         if len(request.form['title']) > 5 and len(request.form['note']) > 10:
             add_task()
     return redirect(url_for("home"))
-
 
 def select_task(task_id):
     db = get_db()
@@ -293,7 +276,6 @@ def select_task(task_id):
     r = db.execute(query)
     rows = r.fetchone()
     return rows
-
 
 def update_task(task_id):
     '''Процедура для функции update()'''
@@ -306,7 +288,6 @@ def update_task(task_id):
             status=True
         )
         db.execute(query2)
-
 
 @app.route("/update/<int:task_id>")
 def update(task_id):
@@ -349,12 +330,10 @@ def cancel(task_id):
 
     return redirect(url_for("home"))
 
-
 def create_tables():
     '''запускается один раз, в случае обновления схемы таблиц,
      или создания новой БД. Запустить можно с консоли '''
     metadata.create_all(connect_db().engine)
-
 
 def select_login_user(log, passw):
     '''Вспомогательная функция для функции login()'''
@@ -401,9 +380,6 @@ def logout():
     """Logout Form"""
     session['logged_in'] = False
     return redirect(url_for('home'))
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
