@@ -22,7 +22,7 @@ STATIC_FOLDER = 'static'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_002.db')))
+app.config.update(dict(DATABASE=os.path.join(app.root_path, 'todo_002db')))
 
 def connect_db():
     '''Соединение с БД'''
@@ -269,6 +269,7 @@ def add():
     return redirect(url_for("home"))
 
 def select_task(task_id):
+    '''Определяет запись в таблице для функций update() и delete()'''
     db = get_db()
     query = select([tasks]).where(
         tasks.c.id == task_id
