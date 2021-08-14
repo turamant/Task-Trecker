@@ -2,3 +2,5 @@
 Pipfile.lock
 *.pyc
 Q_*.*
+screenshots
+static
