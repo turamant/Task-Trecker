@@ -15,7 +15,7 @@ from Model.tables import users, tasks, metadata
 
 DATABASE = '/tmp/todo_002.db'
 DEBUG = True
-SECRET_KEY = 'fdgfh78@#5?>gfhf89dx,v06k'
+SECRET_KEY = os.environ['SECRET_KEY']
 USERNAME = 'admin'
 PASSWORD = '123'
 STATIC_FOLDER = 'static'
