@@ -15,9 +15,7 @@ from Model.tables import users, tasks, metadata
 
 DATABASE = '/tmp/todo_002.db'
 DEBUG = True
-SECRET_KEY = os.environ['SECRET_KEY']
-USERNAME = 'admin'
-PASSWORD = '123'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 STATIC_FOLDER = 'static'
 
 app = Flask(__name__)
